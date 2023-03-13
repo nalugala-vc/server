@@ -60,7 +60,7 @@ export const addRemoveFriends = async (req, res) => {
             }
         );
 
-        res.status(200).json(user);
+        res.status(200).json(formattedFriends);
     } catch (error) {
         res.status(404).json({ error: error.message });
     }
