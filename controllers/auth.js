@@ -11,11 +11,12 @@ export const register = async (req, res)=>{
             lastName,
             email,
             password,
-            picturePath,
             friends,
             location,
             occupation
         } = req.body;
+
+        const picturePath = req.file.filename;
 
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password,salt);
@@ -34,9 +35,9 @@ export const register = async (req, res)=>{
         });
 
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        return res.status(201).json(savedUser);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -55,8 +56,8 @@ export const login =  async(req, res) =>{
 
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
         delete user.password;
-        res.status(200).json({ token, user});
+        return res.status(200).json({ token, user});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 }
